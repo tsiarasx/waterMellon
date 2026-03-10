@@ -1,0 +1,98 @@
+body {
+    font-family:sans-serif;
+}
+header h1 {
+    text-align: center;
+    background-color: darkslategrey;
+    padding: 20px;
+    margin: -10px;
+}
+
+.main_body {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.main_body h2 {
+    text-align: center;
+}
+.main_body button {
+    color: black;
+    background-color: lightgray;
+    border: none;
+    border-radius: 20px;
+
+}
+.main_body button:hover {
+    background-color: grey;
+}
+.main_body button:active {
+    background-color: darkgray;
+}
+.to_do,.in_progress,.done{
+    background-color: lightslategray;
+    padding: 10px;
+    border-radius: 20px;
+    height: 400px;
+    width: 300px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+h2 {
+    position: fixed;
+    background-color: darkslategrey;
+    width: 305px;
+    margin: -5px;
+    margin-top: -10px;
+    border-radius: 20px;
+    padding: 12px 7px;
+    margin-left: -12px;
+    overflow: hidden;
+}
+.table_to_do,.table_in_progress,.table_done {
+    margin-top: 60px;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+form {
+    display:grid;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    
+}
+form input {
+    border: none;
+    padding:10px;
+    width: 200px;
+    background-color: lightslategray;
+    border-radius: 50px;
+    margin-bottom: 5px;
+}
+form button{
+    border: none;
+    background-color:darkslategrey;
+    padding: 10px;
+    border-radius: 50px;
+}
+form button:hover{
+    background-color: rgba(47, 79, 79, 0.596);
+}
+form button:active{
+    background-color: darkgray;
+}
+input::placeholder{
+    color: black;
+}
+footer {
+    text-align: center;
+    background-color: darkslategray;
+    padding: 12px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
