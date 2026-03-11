@@ -4,54 +4,41 @@ document.addEventListener("DOMContentLoaded", function() {
     let inProgress=[];
     let done=[];
 
-    /* Moving a task from toDo to InProgress */
     function moveTaskToInProgress(task) { 
-        taskIndex=toDo.findIndex(x => x === task);
-        lowerArray=toDo.slice(taskIndex+1);
-        upperArray=toDo.slice(0,taskIndex)
-        toDo=upperArray.concat(lowerArray);
+        let taskIndex = toDo.findIndex(x => x === task);
+        toDo.splice(taskIndex, 1);
         inProgress.push(task);
-
     }
-    /* Moving a task from InProgress to Done */
+
     function moveTaskToDone(task) { 
-        taskIndex=inProgress.findIndex(x => x === task);
-        lowerArray=inProgress.slice(taskIndex+1);
-        upperArray=inProgress.slice(0,taskIndex)
-        inProgress=upperArray.concat(lowerArray);
+        let taskIndex = inProgress.findIndex(x => x === task);
+        inProgress.splice(taskIndex, 1);
         done.push(task);
-
     }
-    /* Deleting a task from Done */
+
     function deleteTask(task) {
-        taskIndex=done.findIndex(x => x === task);
-        lowerArray=done.slice(taskIndex+1);
-        upperArray=done.slice(0,taskIndex)
-        done=upperArray.concat(lowerArray);
+        let taskIndex = done.findIndex(x => x === task);
+        done.splice(taskIndex, 1);
     }
 
-    /* Adding Task to To Do List */
     function addTaskToList(task){
-        query=document.querySelector(".table_to_do");
-        row = query.insertRow();
-        cell1 = row.insertCell(0);
-        cell2 = row.insertCell(1);
+        let query = document.querySelector(".table_to_do");
+        let row = query.insertRow();
+        let cell1 = row.insertCell(0);
+        let cell2 = row.insertCell(1);
         cell1.innerHTML = task;
-        cell2.innerHTML = "<button class='move_to_in_progress'>Move to In Progress</button>";
-        
+        cell2.innerHTML = "<button class='move_to_in_progress'>Move</button>";
     }
 
-    /* Adding Task to In Progress List */
     function addTaskToInProgress(task){
         const table = document.querySelector(".table_in_progress");
         const row = table.insertRow();
         const cell1 = row.insertCell(0);
         const cell2 = row.insertCell(1);
         cell1.innerHTML = task;
-        cell2.innerHTML = "<button class='move_to_done'>Move to Done</button>";
+        cell2.innerHTML = "<button class='move_to_done'>Next</button>";
     }
 
-    /* Adding Task to Done List */
     function addTaskToDone(task){
         const table = document.querySelector(".table_done");
         const row = table.insertRow();
@@ -61,63 +48,53 @@ document.addEventListener("DOMContentLoaded", function() {
         cell2.innerHTML = "<button class='delete'>Delete</button>";
     }
 
-
-
-    /* Adding task from the form */
     const form = document.querySelector("form");
     form.addEventListener("submit", function(event) {
         event.preventDefault();
         const input = document.querySelector("#text");
-        const task = input.value;
-        if (task) {
-            addTaskToList(task);
-            toDo.push(task);
+        const val = input.value;
+        if (val) {
+            const now = new Date();
+            const timestamp = now.toLocaleDateString() + " | " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const taskWithTime = `${val} <span class="task-time">${timestamp}</span>`;
+            
+            addTaskToList(taskWithTime);
+            toDo.push(taskWithTime);
             input.value = "";
         }
     });
 
-     /* Moving tasks from to do to in progress */
     document.querySelector('.table_to_do').addEventListener('click', function(e) {
         if (e.target.classList.contains('move_to_in_progress')) {
-            const task = e.target.parentElement.previousElementSibling.textContent;
+            const task = e.target.parentElement.previousElementSibling.innerHTML;
             moveTaskToInProgress(task);
             e.target.closest('tr').remove();
             addTaskToInProgress(task);
         }
     });
 
-    /* Moving tasks from in progress to done */
     document.querySelector('.table_in_progress').addEventListener('click', function(e) {
         if (e.target.classList.contains('move_to_done')) {
-            const task = e.target.parentElement.previousElementSibling.textContent;
+            const task = e.target.parentElement.previousElementSibling.innerHTML;
             moveTaskToDone(task);
             e.target.closest('tr').remove();
             addTaskToDone(task);
         }
     });
 
-    /* Deleting tasks from done */
     document.querySelector('.table_done').addEventListener('click', function(e) {
         if (e.target.classList.contains('delete')) {
-            const task = e.target.parentElement.previousElementSibling.textContent;
+            const task = e.target.parentElement.previousElementSibling.innerHTML;
             deleteTask(task);
             e.target.closest('tr').remove();
         }
     });
 
- 
-    function loadConfig(){
-        fetch("config.json")
-            .then(res=>res.json())
-            .then(post=>{
-                document.body.style.backgroundColor=post.backround_color;
-            })
-            .catch(err=> console.err(err));
-
-    }
-    loadConfig();  
-
-    
-    
-
+    // Background config
+    fetch("config.json")
+        .then(res => res.json())
+        .then(post => {
+            if(post.backround_color) document.body.style.backgroundColor = post.backround_color;
+        })
+        .catch(err => console.log("No config.json found, using default."));
 });
