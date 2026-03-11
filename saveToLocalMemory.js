@@ -41,11 +41,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const tasks = JSON.parse(raw);
 
             (tasks.toDo || []).forEach((task) => {
-                addTaskRow(".table_to_do", task, "move_to_in_progress", "Move to In Progress");
+                addTaskRow(".table_to_do", task, "move_to_in_progress", "Move");
             });
 
             (tasks.inProgress || []).forEach((task) => {
-                addTaskRow(".table_in_progress", task, "move_to_done", "Move to Done");
+                addTaskRow(".table_in_progress", task, "move_to_done", "Next");
             });
 
             (tasks.done || []).forEach((task) => {
